@@ -36,6 +36,9 @@ wp-content/themes/[your-theme]/node_modules/
 !package.json
 !.eslintrc
 
+# CircleCI
+!./circleci
+
 # Stop editing!
 
 ############################################

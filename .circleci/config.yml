@@ -1,0 +1,76 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+orbs:
+  slack: circleci/slack@3.3.0
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10.13.0
+
+    working_directory: ~/repo
+
+    environment:
+      # add secret in your CircleCi project account
+      THEME_PATH: "wp-content/themes/$THEME_NAME"
+      GIT_SERVER: "git@git.wpengine.com"
+      REPOS: "production/$THEME_NAME.git"
+      BUILD_PATH: "dist"
+
+    steps:
+      - checkout
+
+      - run:
+          name: "Establish & test ssh connection to Git server"
+          command: |
+            ssh -v -o "StrictHostKeyChecking no" $GIT_SERVER info
+
+      - run:
+          name: "Copy package.json to working directory"
+          command: |
+            cp $THEME_PATH/package.json ./package.json
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      # Git config
+      - run:
+          name: Git config
+          command: |
+            git config --global push.default simple && git config --global user.email "email@domain.com" && git config --global user.name "CircleCI Robot"
+
+      # yarn install packages
+      - run: cd $THEME_PATH && yarn install
+
+      # cache save
+      - save_cache:
+          paths:
+            - $THEME_PATH/node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run: cp $THEME_PATH/.env.production $THEME_PATH/.env
+      - run: cd $THEME_PATH && yarn run build
+
+      # Commit
+      - run:
+          name: Add dist build files to Git
+          command: |
+            git add -f $THEME_PATH/$BUILD_PATH/* && git commit -am "CircleCI build"
+
+      # push to repos
+      - run:
+          name: Deploy to WPEngine
+          command: |
+            git push -f $GIT_SERVER:$REPOS
+
+      # push notification to Slack
+      - slack/notify:
+          color: "#000000"
+          message: ":robot_face: CSTJ just deployed using CircleCI."
+          webhook: https://hooks.slack.com/CUSTOM_HOOK_URL
