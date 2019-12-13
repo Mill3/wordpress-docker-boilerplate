@@ -5,6 +5,8 @@
 # Ignore everything #
 **
 
+!.env.sample
+
 # Keep basic folders EMPTY
 !wp-content/
 wp-content/**

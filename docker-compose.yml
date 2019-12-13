@@ -1,19 +1,26 @@
-version: '2'
+version: "2"
 
 volumes:
   data: {}
 
 services:
   wordpress:
-    image: wordpress
+    image: wordpress:5.2.4
     ports:
-      - 8000:80
+      - ${LOCAL_PORT_WEB}:80
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_PASSWORD: root
       WORDPRESS_DB_PASSWORDL: root
+      WORDPRESS_CONFIG_EXTRA: |
+        /* Extra settings for theme */
+        define( 'WP_DEBUG', ${DEBUG} );
+        define( 'THEME_DEV', ${DEBUG} );
+      WEBPACK_DEV_SERVER_PORT: ${WEBPACK_DEV_SERVER_PORT}
     volumes:
       - ".:/var/www/html"
+      - "${MASTER_PATH}/wp-content/themes/${THEME_NAME}:/var/www/html/wp-content/themes/${THEME_NAME}"
+      - "${MASTER_PATH}/wp-content/plugins/:/var/www/html/wp-content/plugins/"
       - "./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
   db:
     image: mariadb
@@ -24,14 +31,6 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     ports:
-    - 8001:80
+      - ${LOCAL_PORT_PHPMYADMIN}:80
     links:
-    - db:db
-  my-wpcli:
-    image: tatemz/wp-cli
-    volumes_from:
-      - wordpress
-    links:
-      - db:mysql
-    entrypoint: wp
-    command: "--info"
+      - db:db
