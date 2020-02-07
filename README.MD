@@ -1,5 +1,8 @@
 ## MILL3 Docker WP boilerplate
 
+Duplicate file `.env.sample` and name it `.env`.  
+Update *MASTER_PATH* and *THEME_NAME* variables.  
+
 Make sure Docker is installed, then simply run :
 
 ```bash
