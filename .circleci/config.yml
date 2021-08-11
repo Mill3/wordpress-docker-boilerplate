@@ -2,21 +2,29 @@
 #
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
+# Steps by step tutorial
+#
+# - Create project in WPEngine, write down Git project name in WPEngine's GitPush tab.
+# - Add Github project in CircleCI
+# - Go to CircleCI SSH setting, create a "User key" linked to your github account
+# - Visit https://github.com/[your-username].keys : the last key is the one newly created by CircleCI
+# - Add this key in WPEngine SSH Keys
+# - Wait 10 minutes, build should works now
+
 orbs:
   slack: circleci/slack@3.3.0
 version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/node:10.13.0
+      - image: circleci/node:14.15.4
 
     working_directory: ~/repo
 
     environment:
-      # add secret in your CircleCi project account
-      THEME_PATH: "wp-content/themes/$THEME_NAME"
+      THEME_PATH: "wp-content/themes/[CHANGEME]"
       GIT_SERVER: "git@git.wpengine.com"
-      REPOS: "production/$THEME_NAME.git"
+      REPOS: "production/[CHANGEME].git"
       BUILD_PATH: "dist"
 
     steps:
@@ -46,7 +54,7 @@ jobs:
             git config --global push.default simple && git config --global user.email "email@domain.com" && git config --global user.name "CircleCI Robot"
 
       # yarn install packages
-      - run: cd $THEME_PATH && yarn install
+      - run: cd $THEME_PATH && npm install
 
       # cache save
       - save_cache:
@@ -55,7 +63,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run: cp $THEME_PATH/.env.production $THEME_PATH/.env
-      - run: cd $THEME_PATH && yarn run build
+      - run: cd $THEME_PATH && npm run build
 
       # Commit
       - run:
@@ -72,5 +80,5 @@ jobs:
       # push notification to Slack
       - slack/notify:
           color: "#000000"
-          message: ":robot_face: CSTJ just deployed using CircleCI."
+          message: ":robot_face: [CHANGE_ME] just deployed using CircleCI!"
           webhook: https://hooks.slack.com/CUSTOM_HOOK_URL
