@@ -1,0 +1,53 @@
+name: WPENGINE static build and rsync deploy
+on:
+  push:
+    branches: [ master ]
+jobs:
+  Mill3-Deploy-Actions:
+    runs-on: ubuntu-latest
+    env:
+      THEME_PATH: "wp-content/themes/[change-me]/"
+      WPENGINE_SITE_NAME: "[change-me]"
+      SLACK_WEBHOOK_URL: "https://hooks.slack.com/services/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"
+      PROD_SITE_URL: "https://[change-me].mill3.dev/"
+      SITE_NAME: "[change-me]"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: 'npm'
+          cache-dependency-path: ${{ env.THEME_PATH }}package-lock.json
+      - name: Copy env.production sample file to .env
+        working-directory: ${{ env.THEME_PATH }}
+        run: cp .env.production .env
+      - name: Install dep
+        working-directory: ${{ env.THEME_PATH }}
+        run: npm ci
+      - name: Webpack build command
+        id: build
+        working-directory: ${{ env.THEME_PATH }}
+        run: npm run build
+      - name: Deploy to WPEngine
+        if: ${{ success() }}
+        uses: wpengine/github-action-wpe-site-deploy@v2.3.3
+        with:
+          # Deploy vars
+          WPE_SSHG_KEY_PRIVATE: ${{ secrets.WPE_SSHG_KEY_PRIVATE }}
+          PHP_LINT: FALSE
+          FLAGS: -azvr --inplace --delete --exclude=".*" --exclude-from=.deployignore
+          CACHE_CLEAR: TRUE
+          TPO_SRC_PATH: ${{ env.THEME_PATH }}
+          TPO_PATH: ${{ env.THEME_PATH }}
+          # Branches & Environments
+          PRD_BRANCH: master
+          PRD_ENV: ${{ env.WPENGINE_SITE_NAME }}
+      - name: Notify to Slack
+        if: ${{ success() }}
+        uses: act10ns/slack@v1
+        with:
+          status: ${{ job.status }}
+          channel: '#notifications'
+          config: .github/slack.yml
+
+

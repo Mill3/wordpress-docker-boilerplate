@@ -37,7 +37,8 @@ wp-content/themes/[your-theme]/node_modules/
 !.eslintrc
 
 # CircleCI
-!./circleci
+!./.circleci
+!./.github
 
 # Stop editing!
 

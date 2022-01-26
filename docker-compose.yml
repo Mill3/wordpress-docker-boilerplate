@@ -5,17 +5,19 @@ volumes:
 
 services:
   wordpress:
-    image: wordpress:5.2.4
+    image: wordpress:5.8.3
     ports:
       - ${LOCAL_PORT_WEB}:80
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_PASSWORD: root
       WORDPRESS_DB_PASSWORDL: root
+      WORDPRESS_DEBUG: 1
       WORDPRESS_CONFIG_EXTRA: |
         /* Extra settings for theme */
-        define( 'WP_DEBUG', ${DEBUG} );
         define( 'THEME_DEV', ${DEBUG} );
+        define( 'WPMDB_LICENCE', ${WPMDB_LICENCE} );
+        define( 'GF_LICENSE_KEY', ${WPMDB_LICENCE} );
       WEBPACK_DEV_SERVER_PORT: ${WEBPACK_DEV_SERVER_PORT}
     volumes:
       - ".:/var/www/html"
@@ -34,3 +36,11 @@ services:
       - ${LOCAL_PORT_PHPMYADMIN}:80
     links:
       - db:db
+  cli:
+      image: tatemz/wp-cli
+      volumes_from:
+        - wordpress
+      links:
+        - wordpress:mysql
+      entrypoint: wp
+      command: "--info"
