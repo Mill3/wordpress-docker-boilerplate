@@ -5,7 +5,7 @@ volumes:
 
 services:
   wordpress:
-    image: wordpress:5.8.3
+    image: wordpress:5.2.4
     ports:
       - ${LOCAL_PORT_WEB}:80
     environment:
