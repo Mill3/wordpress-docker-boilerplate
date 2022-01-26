@@ -16,9 +16,11 @@ At the root of your WP install, run in terminal :
 docker-compose run --rm cli mill3wp plugins
 ```
 
-### Plugins serial number
+Important Note: this ```wp-cli``` command **won't work** until you activate our boilerplate theme!
 
-Hop on Slack and ask gently for plugins serial number to place in your local .env Docker file
+## Plugins serial number
+
+Hop on Mill3 Slack and ask gently for plugins serial number to place in your local .env Docker file
 ## Notes on .gitignore rules
 
 The ignore file is configured for WPEngine's Git-push deployment which ignore everything except the theme directory. Remove or edit this file if this you are not using WPEngine.
