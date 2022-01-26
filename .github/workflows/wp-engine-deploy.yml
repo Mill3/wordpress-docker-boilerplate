@@ -8,7 +8,7 @@ jobs:
     env:
       THEME_PATH: "wp-content/themes/[change-me]/"
       WPENGINE_SITE_NAME: "[change-me]"
-      SLACK_WEBHOOK_URL: "https://hooks.slack.com/services/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"
+      SLACK_WEBHOOK_URL: "[CHANGE-ME]"
       PROD_SITE_URL: "https://[change-me].mill3.dev/"
       SITE_NAME: "[change-me]"
     steps:
