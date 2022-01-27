@@ -16,8 +16,8 @@ services:
       WORDPRESS_CONFIG_EXTRA: |
         /* Extra settings for theme */
         define( 'THEME_DEV', ${DEBUG} );
-        define( 'WPMDB_LICENCE', ${WPMDB_LICENCE} );
-        define( 'GF_LICENSE_KEY', ${WPMDB_LICENCE} );
+        define( 'WPMDB_LICENCE', '${WPMDB_LICENCE}' );
+        define( 'GF_LICENSE_KEY', '${GF_LICENSE_KEY}' );
       WEBPACK_DEV_SERVER_PORT: ${WEBPACK_DEV_SERVER_PORT}
     volumes:
       - ".:/var/www/html"
