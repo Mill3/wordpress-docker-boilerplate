@@ -13,7 +13,7 @@ Make sure Docker is installed, then simply run :
 At the root of your WP install, run in terminal :
 
 ```bash
-docker-compose run --rm cli mill3wp plugins
+docker-compose run --rm wp-cli mill3wp plugins
 ```
 
 Important Note: this ```wp-cli``` command **won't work** until you activate our boilerplate theme!
