@@ -1,8 +1,4 @@
 version: "3.8"
-
-volumes:
-  data: {}
-
 services:
   wordpress:
     image: wordpress:php8.0-apache
@@ -26,17 +22,17 @@ services:
         define( 'SENTRY_ENV', '${SENTRY_ENV}' );
       WEBPACK_DEV_SERVER_PORT: ${WEBPACK_DEV_SERVER_PORT}
     volumes:
-      - ".:/var/www/html"
+      - wordpress:/var/www/html
       - "${MASTER_PATH}/wp-content/themes/${THEME_NAME}:/var/www/html/wp-content/themes/${THEME_NAME}"
-      - "${MASTER_PATH}/wp-content/plugins/:/var/www/html/wp-content/plugins/"
       - "./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
+      - ./:/var/www/html
   db:
     image: mariadb
     environment:
       MARIADB_DATABASE: wordpress
       MYSQL_ROOT_PASSWORD: root
     volumes:
-      - data:/var/lib/mysql
+      - db:/var/lib/mysql
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     ports:
@@ -50,4 +46,9 @@ services:
       WORDPRESS_DB_PASSWORD: root
       WORDPRESS_DB_HOST: db
     volumes:
-      - ".:/var/www/html"
+      - wordpress:/var/www/html
+      - ./:/var/www/html
+
+volumes:
+  wordpress:
+  db:
