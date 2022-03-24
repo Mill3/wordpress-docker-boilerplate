@@ -1,23 +1,29 @@
-version: "2"
+version: "3.8"
 
 volumes:
   data: {}
 
 services:
   wordpress:
-    image: wordpress:5.2.4
+    image: wordpress:php8.0-apache
     ports:
       - ${LOCAL_PORT_WEB}:80
     environment:
       WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: root
       WORDPRESS_DB_PASSWORD: root
-      WORDPRESS_DB_PASSWORDL: root
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_TABLE_PREFIX: wp_
       WORDPRESS_DEBUG: 1
       WORDPRESS_CONFIG_EXTRA: |
-        /* Extra settings for theme */
-        define( 'THEME_DEV', ${DEBUG} );
+        /* Extra settings for WP */
+        define( 'FS_METHOD', 'direct' );
+        define( 'THEME_ENV', '${THEME_ENV}' );
         define( 'WPMDB_LICENCE', '${WPMDB_LICENCE}' );
         define( 'GF_LICENSE_KEY', '${GF_LICENSE_KEY}' );
+        define( 'SENTRY_DSN_PHP', '${SENTRY_DSN_PHP}' );
+        define( 'SENTRY_DSN_JS', '${SENTRY_DSN_JS}' );
+        define( 'SENTRY_ENV', '${SENTRY_ENV}' );
       WEBPACK_DEV_SERVER_PORT: ${WEBPACK_DEV_SERVER_PORT}
     volumes:
       - ".:/var/www/html"
@@ -27,6 +33,7 @@ services:
   db:
     image: mariadb
     environment:
+      MARIADB_DATABASE: wordpress
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - data:/var/lib/mysql
@@ -36,11 +43,11 @@ services:
       - ${LOCAL_PORT_PHPMYADMIN}:80
     links:
       - db:db
-  cli:
-      image: tatemz/wp-cli
-      volumes_from:
-        - wordpress
-      links:
-        - wordpress:mysql
-      entrypoint: wp
-      command: "--info"
+  wp-cli:
+    image: wordpress:cli
+    environment:
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: root
+      WORDPRESS_DB_HOST: db
+    volumes:
+      - ".:/var/www/html"
