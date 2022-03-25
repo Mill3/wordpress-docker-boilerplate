@@ -75,4 +75,3 @@ package-lock.json
 !docker-compose.yml
 !DockerFile
 !uploads.ini
-!wp-config-docker.php
