@@ -37,6 +37,7 @@ wp-content/themes/[your-theme]/node_modules/
 !package-lock.json
 !yarn.json
 !yarn-lock.json
+!.deployignore
 !.eslintrc
 
 # CircleCI
