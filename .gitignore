@@ -34,6 +34,9 @@ wp-content/themes/[your-theme]/node_modules/
 
 # Other dependencies
 !package.json
+!package-lock.json
+!yarn.json
+!yarn-lock.json
 !.eslintrc
 
 # CircleCI
