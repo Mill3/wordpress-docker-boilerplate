@@ -1,15 +1,17 @@
 name: WPENGINE static build and rsync deploy
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+      - future-staging-branch-name
 jobs:
   Mill3-Deploy-Actions:
     runs-on: ubuntu-latest
     env:
       THEME_PATH: "wp-content/themes/[change-me]/"
-      WPENGINE_SITE_NAME: "[change-me]"
+      WPENGINE_ENV_NAME: ${{ github.ref == 'refs/heads/master' && '[change-me]' || '[change-to-staging]' }}
+      PROD_SITE_URL: ${{ github.ref == 'refs/heads/master' && 'https://[change-me].mill3.dev/' || 'https://[change-to-staging].wpengine.com/' }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-      PROD_SITE_URL: "https://[change-me].mill3.dev/"
       SITE_NAME: "[change-me]"
     steps:
       - uses: actions/checkout@v2
@@ -30,18 +32,16 @@ jobs:
         run: npm run build
       - name: Deploy to WPEngine
         if: ${{ success() }}
-        uses: wpengine/github-action-wpe-site-deploy@v2.3.3
+        uses: wpengine/github-action-wpe-site-deploy@v3.1.1
         with:
           # Deploy vars
           WPE_SSHG_KEY_PRIVATE: ${{ secrets.WPE_SSHG_KEY_PRIVATE }}
+          WPE_ENV: ${{ env.WPENGINE_ENV_NAME }}
           PHP_LINT: FALSE
           FLAGS: -azvr --inplace --delete --exclude=".*" --exclude-from=.deployignore
           CACHE_CLEAR: TRUE
-          TPO_SRC_PATH: ${{ env.THEME_PATH }}
-          TPO_PATH: ${{ env.THEME_PATH }}
-          # Branches & Environments
-          PRD_BRANCH: master
-          PRD_ENV: ${{ env.WPENGINE_SITE_NAME }}
+          SRC_PATH: ${{ env.THEME_PATH }}
+          REMOTE_PATH: ${{ env.THEME_PATH }}
       - name: Notify to Slack
         if: ${{ success() }}
         uses: act10ns/slack@v1
