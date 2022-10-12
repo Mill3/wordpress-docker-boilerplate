@@ -33,9 +33,9 @@ wp-content/plugins/**
 !.env.sample
 
 # Theme
-!wp-content/themes/la-percee/
-!wp-content/themes/la-percee/**
-wp-content/themes/la-percee/node_modules/
+!wp-content/themes/mill3-wp-theme-boilerplate/
+!wp-content/themes/mill3-wp-theme-boilerplate/**
+wp-content/themes/mill3-wp-theme-boilerplate/node_modules/
 
 # Stop editing!
 
