@@ -5,8 +5,6 @@
 # Ignore everything #
 **
 
-!.env.sample
-
 # Keep basic folders EMPTY
 !wp-content/
 wp-content/**
@@ -14,7 +12,6 @@ wp-content/**
 !wp-content/plugins/
 wp-content/themes/**
 wp-content/themes/**/node_modules/
-
 wp-content/plugins/**
 
 # Add two rules for each Theme or Plugin you want to include:
@@ -23,12 +20,6 @@ wp-content/plugins/**
 ###############################
 
 # Start editing!
-
-# Theme
-!wp-content/themes/[your-theme]/
-!wp-content/themes/[your-theme]/**
-wp-content/themes/[your-theme]/node_modules/
-
 
 # Custom Plugin
 
@@ -39,10 +30,12 @@ wp-content/themes/[your-theme]/node_modules/
 !yarn-lock.json
 !.deployignore
 !.eslintrc
+!.env.sample
 
-# CircleCI
-!./.circleci
-!./.github
+# Theme
+!wp-content/themes/la-percee/
+!wp-content/themes/la-percee/**
+wp-content/themes/la-percee/node_modules/
 
 # Stop editing!
 
@@ -57,7 +50,6 @@ dist_dev
 bower_components
 node_modules
 npm-debug.log
-package-lock.json
 .tm_properties
 .AppleDouble
 .AppleTemp*
@@ -79,3 +71,9 @@ package-lock.json
 !docker-compose.yml
 !DockerFile
 !uploads.ini
+
+# CI
+!.circleci
+!.circleci/**
+!.github
+!.github/**
