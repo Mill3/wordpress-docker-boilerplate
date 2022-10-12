@@ -8,11 +8,11 @@ jobs:
   Mill3-Deploy-Actions:
     runs-on: ubuntu-latest
     env:
-      THEME_PATH: "wp-content/themes/[change-me]/"
-      WPENGINE_ENV_NAME: ${{ github.ref == 'refs/heads/master' && '[change-me]' || '[change-to-staging]' }}
-      PROD_SITE_URL: ${{ github.ref == 'refs/heads/master' && 'https://[change-me].mill3.dev/' || 'https://[change-to-staging].wpengine.com/' }}
+      THEME_PATH: "wp-content/themes/mill3-wp-theme-boilerplate/"
+      WPENGINE_ENV_NAME: ${{ github.ref == 'refs/heads/master' && 'wpenginesitename' || '[change-to-staging]' }}
+      PROD_SITE_URL: ${{ github.ref == 'refs/heads/master' && 'https://wpenginesitename.mill3.dev/' || 'https://[change-to-staging].wpengine.com/' }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-      SITE_NAME: "[change-me]"
+      SITE_NAME: "wpenginesitename"
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
