@@ -1,6 +1,7 @@
 version: "3.8"
 services:
   wordpress:
+    build: .
     image: wordpress:php8.0-apache
     ports:
       - ${LOCAL_PORT_WEB}:80
