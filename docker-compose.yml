@@ -40,7 +40,7 @@ services:
     links:
       - db:db
   wp-cli:
-    image: wordpress:cli
+    image: wordpress:cli-php8.0
     environment:
       WORDPRESS_DB_USER: root
       WORDPRESS_DB_PASSWORD: root
