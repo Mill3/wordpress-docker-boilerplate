@@ -1,7 +1,8 @@
 version: "3.8"
 services:
   wordpress:
-    image: wordpress:php8.0-apache
+    build: .
+    image: wordpress:6.5.2-php8.1-apache
     ports:
       - ${LOCAL_PORT_WEB}:80
     environment:
@@ -20,6 +21,7 @@ services:
         define( 'SENTRY_DSN_PHP', '${SENTRY_DSN_PHP}' );
         define( 'SENTRY_DSN_JS', '${SENTRY_DSN_JS}' );
         define( 'SENTRY_ENV', '${SENTRY_ENV}' );
+        define( 'OPENAI_API_KEY', '${OPENAI_API_KEY}' );
       WEBPACK_DEV_SERVER_PORT: ${WEBPACK_DEV_SERVER_PORT}
     volumes:
       - "${MASTER_PATH}/wp-content/themes/${THEME_NAME}:/var/www/html/wp-content/themes/${THEME_NAME}"
@@ -33,13 +35,13 @@ services:
     volumes:
       - db:/var/lib/mysql
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+    image: phpmyadmin:latest
     ports:
       - ${LOCAL_PORT_PHPMYADMIN}:80
     links:
       - db:db
   wp-cli:
-    image: wordpress:cli
+    image: wordpress:cli-php8.0
     environment:
       WORDPRESS_DB_USER: root
       WORDPRESS_DB_PASSWORD: root
