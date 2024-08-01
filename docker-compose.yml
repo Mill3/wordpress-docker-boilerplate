@@ -21,6 +21,7 @@ services:
         define( 'SENTRY_DSN_PHP', '${SENTRY_DSN_PHP}' );
         define( 'SENTRY_DSN_JS', '${SENTRY_DSN_JS}' );
         define( 'SENTRY_ENV', '${SENTRY_ENV}' );
+        define( 'OPENAI_API_KEY', '${OPENAI_API_KEY}');
       WEBPACK_DEV_SERVER_PORT: ${WEBPACK_DEV_SERVER_PORT}
     volumes:
       - "${MASTER_PATH}/wp-content/themes/${THEME_NAME}:/var/www/html/wp-content/themes/${THEME_NAME}"
