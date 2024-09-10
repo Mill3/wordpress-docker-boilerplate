@@ -1,8 +1,7 @@
-version: "3.8"
 services:
   wordpress:
     build: .
-    image: wordpress:6.5.2-php8.1-apache
+    image: wordpress:6.6.2-php8.1-apache
     ports:
       - ${LOCAL_PORT_WEB}:80
     environment:
@@ -38,6 +37,14 @@ services:
       - ${LOCAL_PORT_PHPMYADMIN}:80
     links:
       - db:db
+  composer:
+    image: composer:latest
+    volumes:
+      - ./wp-content/themes/${THEME_NAME}/composer.json:/var/www/html/wp-content/themes/${THEME_NAME}/composer.json
+      - ./wp-content/themes/${THEME_NAME}/composer.lock:/var/www/html/wp-content/themes/${THEME_NAME}/composer.lock
+      - ./wp-content/themes/${THEME_NAME}/vendor:/var/www/html/wp-content/themes/${THEME_NAME}/vendor
+    working_dir: /var/www/html/wp-content/themes/${THEME_NAME}
+    command: ["composer", "install", "--ignore-platform-reqs"]
   wp-cli:
     image: wordpress:cli-php8.0
     environment:
@@ -50,3 +57,4 @@ services:
 volumes:
   wordpress:
   db:
+  composer:

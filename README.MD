@@ -24,3 +24,9 @@ Hop on Mill3 Slack and ask gently for plugins serial number to place in your loc
 ## Notes on .gitignore rules
 
 The ignore file is configured for WPEngine's Git-push deployment which ignore everything except the theme directory. Remove or edit this file if this you are not using WPEngine.
+
+## Add composer packages to theme vendor
+
+```bash
+docker run --env-file .env --rm -v ./wp-content/themes/${THEME_NAME}:/var/www/html/wp-content/themes/${THEME_NAME} -w /var/www/html/wp-content/themes/mill3-wp-theme-boilerplate composer:latest composer require nesbot/carbon
+```
