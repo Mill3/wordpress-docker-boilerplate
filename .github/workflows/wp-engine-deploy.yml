@@ -30,6 +30,15 @@ jobs:
         id: build
         working-directory: ${{ env.THEME_PATH }}
         run: npm run build
+      - name: Install PHP dependencies
+        uses: "php-actions/composer@v6"
+        env:
+          COMPOSER: "composer.json"
+        with:
+          php_version: "8.2"
+          version: "2.2"
+          args: "--ignore-platform-reqs"
+          working_dir: ${{ env.THEME_PATH }}
       - name: Deploy to WPEngine
         if: ${{ success() }}
         uses: wpengine/github-action-wpe-site-deploy@v3.1.1
