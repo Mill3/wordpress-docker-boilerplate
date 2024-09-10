@@ -12,6 +12,7 @@ wp-content/**
 !wp-content/plugins/
 wp-content/themes/**
 wp-content/themes/**/node_modules/
+wp-content/themes/**/vendor/
 wp-content/plugins/**
 
 # Add two rules for each Theme or Plugin you want to include:
@@ -36,6 +37,7 @@ wp-content/plugins/**
 !wp-content/themes/mill3-wp-theme-boilerplate/
 !wp-content/themes/mill3-wp-theme-boilerplate/**
 wp-content/themes/mill3-wp-theme-boilerplate/node_modules/
+wp-content/themes/mill3-wp-theme-boilerplate/vendor/
 
 # Stop editing!
 
