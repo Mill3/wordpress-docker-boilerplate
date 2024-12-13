@@ -30,3 +30,26 @@ The ignore file is configured for WPEngine's Git-push deployment which ignore ev
 ```bash
 docker run --rm -v ./wp-content/themes/mill3-wp-theme-boilerplate:/var/www/html/wp-content/themes/mill3-wp-theme-boilerplate -w /var/www/html/wp-content/themes/mill3-wp-theme-boilerplate composer:latest composer require nesbot/carbon
 ```
+## Update a composer package
+
+First edit composer.json, bump 2.2.0 to 2.3.0 for example :
+
+```json
+{
+    "require": {
+      "timber/timber": "2.2.0",
+    }
+}
+```
+
+Then run :
+
+```bash
+docker run --rm -v ./wp-content/themes/mill3-wp-theme-boilerplate:/var/www/html/wp-content/themes/mill3-wp-theme-boilerplate -w /var/www/html/wp-content/themes/mill3-wp-theme-boilerplate composer:latest composer update
+```
+
+## Update composer packages locally
+
+```bash
+docker run --rm -v ./wp-content/themes/mill3-wp-theme-boilerplate:/var/www/html/wp-content/themes/mill3-wp-theme-boilerplate -w /var/www/html/wp-content/themes/mill3-wp-theme-boilerplate composer:latest composer install
+```
