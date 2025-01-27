@@ -53,6 +53,21 @@ services:
       WORDPRESS_DB_HOST: db
     volumes:
       - ./:/var/www/html
+  notifier:
+    image: alpine
+    depends_on:
+      - wordpress
+      - db
+      - phpmyadmin
+    command:
+      /bin/sh -c "sleep 3; \
+      echo '─────────────── ${THEME_NAME} ─────────────────';\
+      echo 'WordPress site running at :';\
+      echo 'http://localhost:${LOCAL_PORT_WEB}\/';\
+      echo 'http://localhost:${LOCAL_PORT_WEB}\/wp-admin\/';\
+      echo 'PhpMyAdmin running at :'; \
+      echo 'http://localhost:${LOCAL_PORT_PHPMYADMIN}/';
+      echo '─────────────── ${THEME_NAME} ─────────────────';"
 
 volumes:
   wordpress:
