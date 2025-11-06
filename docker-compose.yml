@@ -1,7 +1,7 @@
 services:
   wordpress:
     build: .
-    image: wordpress:6.7.2-php8.1-apache
+    image: wordpress:6.8.3-php8.4-apache
     ports:
       - ${LOCAL_PORT_WEB}:80
     environment:
