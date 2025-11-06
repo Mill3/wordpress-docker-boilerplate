@@ -23,10 +23,10 @@ jobs:
       - name: Copy env.production sample file to .env
         working-directory: ${{ env.THEME_PATH }}
         run: cp .env.production .env
-      - name: Install dep
+      - name: Install Node dep
         working-directory: ${{ env.THEME_PATH }}
         run: npm ci
-      - name: Webpack build command
+      - name: Node static build
         id: build
         working-directory: ${{ env.THEME_PATH }}
         run: npm run build
