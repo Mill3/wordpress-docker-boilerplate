@@ -30,6 +30,16 @@ jobs:
         id: build
         working-directory: ${{ env.THEME_PATH }}
         run: npm run build
+      #- name: Create Sentry release
+      #  uses: getsentry/action-release@v3
+      #  env:
+      #    SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN_2025 }}
+      #    SENTRY_ORG: "mill3-studio"
+      #    SENTRY_PROJECT: js-${{ env.SITE_NAME }}
+      #  with:
+      #    environment: production
+      #    version: "0.4.0-${{ github.sha }}"
+      #    sourcemaps: "${{ env.THEME_PATH }}dist/theme/**"
       - name: Install PHP dependencies
         uses: "php-actions/composer@v6"
         env:
