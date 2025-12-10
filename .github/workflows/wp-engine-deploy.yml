@@ -28,7 +28,7 @@ jobs:
       - name: Install dep
         working-directory: ${{ env.THEME_PATH }}
         run: npm ci
-      - name: Webpack build command
+      - name: Static build command
         id: build
         working-directory: ${{ env.THEME_PATH }}
         env:
