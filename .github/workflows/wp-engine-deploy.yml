@@ -13,6 +13,8 @@ jobs:
       PROD_SITE_URL: ${{ github.ref == 'refs/heads/master' && 'https://wpenginesitename.mill3.dev/' || 'https://[change-to-staging].wpengine.com/' }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
       SITE_NAME: "wpenginesitename"
+      SENTRY_RELEASE_NAME: "0.4.0-${{ github.sha }}"
+      SENTRY_PROJECT_NAME: "js-[change-me]"
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v4
@@ -23,13 +25,25 @@ jobs:
       - name: Copy env.production sample file to .env
         working-directory: ${{ env.THEME_PATH }}
         run: cp .env.production .env
-      - name: Install Node dep
+      - name: Install dep
         working-directory: ${{ env.THEME_PATH }}
         run: npm ci
-      - name: Node static build
+      - name: Webpack build command
         id: build
         working-directory: ${{ env.THEME_PATH }}
-        run: npm run build
+        env:
+          SENTRY_RELEASE_NAME: ${{ env.SENTRY_RELEASE_NAME }}
+        run: echo "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN_2025 }}" >> .env.sentry-build-plugin && npm run build
+      - name: Create Sentry release
+        uses: getsentry/action-release@v3
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN_2025 }}
+          SENTRY_ORG: "mill3-studio"
+          SENTRY_PROJECT: ${{ env.SENTRY_PROJECT_NAME }}
+        with:
+          environment: production
+          release: ${{ env.SENTRY_RELEASE_NAME }}
+          finalize: true
       - name: Install PHP dependencies
         uses: "php-actions/composer@v6"
         env:
@@ -58,5 +72,3 @@ jobs:
           status: ${{ job.status }}
           channel: '#notifications'
           config: .github/slack.yml
-
-
