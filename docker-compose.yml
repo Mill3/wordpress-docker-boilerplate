@@ -17,6 +17,7 @@ services:
         define( 'THEME_ENV', '${THEME_ENV}' );
         define( 'WPMDB_LICENCE', '${WPMDB_LICENCE}' );
         define( 'GF_LICENSE_KEY', '${GF_LICENSE_KEY}' );
+        define( 'ACF_PRO_LICENSE', '${ACF_PRO_LICENSE}' );
         define( 'SENTRY_DSN_PHP', '${SENTRY_DSN_PHP}' );
         define( 'SENTRY_DSN_JS', '${SENTRY_DSN_JS}' );
         define( 'SENTRY_ENV', '${SENTRY_ENV}' );
