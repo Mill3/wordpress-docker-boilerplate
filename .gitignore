@@ -79,3 +79,10 @@ npm-debug.log
 !.circleci/**
 !.github
 !.github/**
+
+# claude
+!.claude
+!.claude/**
+!.claude/commands/**
+!.claude/skills/**
+.claude/worktrees
